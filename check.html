@@ -11,18 +11,26 @@
         <!--   customize function -->
         <script type="text/javascript">
 
-        //var queryUrl = "http://localhost:3030/ds1?query=SELECT%20?eth%20?food%20?dist%20WHERE%20{%20GRAPH%20%3Chttp://localhost:3030/ds1/data/dataset1%3E%20{%20?s1%20%3Chttp://cdph.data.ca.gov/resource/_6tej-5zx7/race_eth_name%3E%20?eth.%20?s1%20%3Chttp://cdph.data.ca.gov/resource/_6tej-5zx7/geoname%3E%20%22Alameda%22.%20?s1%20%3Chttp://cdph.data.ca.gov/resource/_6tej-5zx7/affordability_ratio%3E%20?food.%20}%20GRAPH%20%3Chttp://localhost:3030/ds1/data/dataset2%3E%20{%20?s2%20%3Chttp://cdph.data.ca.gov/resource/yq3s-y235/race_eth_name%3E%20?eth.%20?s2%20%3Chttp://cdph.data.ca.gov/resource/yq3s-y235/geoname%3E%20%22Alameda%22.%20?s2%20%3Chttp://cdph.data.ca.gov/resource/yq3s-y235/p_trans_acc%3E%20?dist.%20}%20}";	
-
+        // not
         function callRegion(){
             var region = $("#drpRegion").val();
             queryUrl = "http://localhost:3030/myDataset/query?query=Select%20%3Fname%20%3Fadd%20%3Fo%20where%20%7B%20%20%0D%0A%3Fs1%20%3Chttp%3A%2F%2Fdata-gov.tw.rpi.edu%2Fvocab%2Fp%2F994%2Fname%3E%20%3Fname.%0D%0A%3Fs1%20%3Chttp%3A%2F%2Fdata-gov.tw.rpi.edu%2Fvocab%2Fp%2F994%2Fstreet_address%3E%20%3Fadd.%0D%0A%3Fs1%20%3Chttp%3A%2F%2Fdata-gov.tw.rpi.edu%2Fvocab%2Fp%2F994%2Fcountry%3E%22US%22%20%20%0D%0A%0D%0A%7D%20%20limit%2010&format=json";
         }
 
+        /*
         var region = $("#drpRegion").val();
+        var reg = $("#drpRegion option:selected").val();
+        var r = $("#drpRegion").text($(this).find(":selected").text());
+        console.log(r);
         queryUrl = "http://localhost:3030/myDataset/query?query=Select%20%3Fname%20%3Fadd%20%3Fo%20where%20%7B%20%20%0D%0A%3Fs1%20%3Chttp%3A%2F%2Fdata-gov.tw.rpi.edu%2Fvocab%2Fp%2F994%2Fname%3E%20%3Fname.%0D%0A%3Fs1%20%3Chttp%3A%2F%2Fdata-gov.tw.rpi.edu%2Fvocab%2Fp%2F994%2Fstreet_address%3E%20%3Fadd.%0D%0A%3Fs1%20%3Chttp%3A%2F%2Fdata-gov.tw.rpi.edu%2Fvocab%2Fp%2F994%2Fcountry%3E%22US%22%20%20%0D%0A%0D%0A%7D%20%20limit%2010&format=json";
-        
+        */
+       
         $(document).ready(function(){
             $("#myform").submit(function(e){
+                var region = $("#drpRegion").val();
+                console.log(region);
+                
+                queryUrl = "http://localhost:3030/myDataset/query?query=Select%20%3Fname%20%3Fadd%20%3Fo%20where%20%7B%20%20%0D%0A%3Fs1%20%3Chttp%3A%2F%2Fdata-gov.tw.rpi.edu%2Fvocab%2Fp%2F994%2Fname%3E%20%3Fname.%0D%0A%3Fs1%20%3Chttp%3A%2F%2Fdata-gov.tw.rpi.edu%2Fvocab%2Fp%2F994%2Fstreet_address%3E%20%3Fadd.%0D%0A%3Fs1%20%3Chttp%3A%2F%2Fdata-gov.tw.rpi.edu%2Fvocab%2Fp%2F994%2Fcountry%3E%22"+region+"%22%20%20%0D%0A%0D%0A%7D%20%20limit%2010&format=json";
             e.preventDefault();
                 $.ajax({
                 dataType: "jsonp",
@@ -108,7 +116,7 @@
                         <form id="myform">
                             <div>Select a Region</div>
                             <div><select id="drpRegion" onchange="callRegion()">
-                                    <option value="PK">Alameda</option>
+                                    <option value="US">Alameda</option>
                                     <option value="Contra Costa">Contra Costa</option>
                                     <option value="Los Angeles">Los Angeles</option>
                                     <option value="Marin">Marin</option>
