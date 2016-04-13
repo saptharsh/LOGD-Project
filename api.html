@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="js/jquery-2.1.3.min.js"></script>
+        <script src="js/jquery-ui.min.js"></script>
+        <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>-->
+
+    </head>
+    <body>
+
+        <div><center><h4>Denied and Red Flagged Companies</h4></center></div>
+        <table>
+            <tr>
+                <td>
+                    <form id="myForm" action="">
+                        <!--<div>Select a Region</div>
+                        <div><select id="drpRegion" onchange="callRegion()" >
+                                <option value="Alameda">Select a Value</option>
+                                <option id="PK" value="PK">Pakistan</option>
+                            </select>
+                        </div>
+                        <br/>
+                        <input type="submit" id="btnRegion">-->
+                        <div><select id="drpRegion" onchange="callRegion()" >
+                                <option>Select a Value</option>
+                                <option id="PK" value="PK">Pakistan</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <!-- <input type="text">-->
+                            <input type="submit" id="btnRegion">
+                        </div>
+                    </form>
+                </td>
+
+            </tr>
+        </table>
+
+        </br>
+        </br>
+        <div id="result">shata</div>
+
+
+        <script type="text/javascript">
+
+
+            //$(document).on('change', 'select', function () {
+
+            //  alert($("#drpRegion option:selected").val());
+            //});
+            var region = $("#drpRegion option:selected").val();
+            function callRegion()
+            {
+                //alert("here");
+                var region = $("#drpRegion").val();
+                console.log(region);
+                var reg = "US";
+                console.log(reg);
+                //queryUrl = "https://localhost:444/snipets/semantic/api.html";
+                queryUrl = "http://localhost:3030/myDataset/query?query=Select+%3Fname+%3Fadd+%3Fo+where+%7B++%0D%0A%3Fs1+%3Chttp%3A%2F%2Fdata-gov.tw.rpi.edu%2Fvocab%2Fp%2F994%2Fname%3E+%3Fname.%0D%0A%3Fs1+%3Chttp%3A%2F%2Fdata-gov.tw.rpi.edu%2Fvocab%2Fp%2F994%2Fstreet_address%3E+%3Fadd.%0D%0A%3Fs1+%3Chttp%3A%2F%2Fdata-gov.tw.rpi.edu%2Fvocab%2Fp%2F994%2Fcountry%3E%22" + reg + "%22++%0D%0A%0D%0A%7D++limit+10&output=text&stylesheet=";
+            }
+
+            $(document).ready(function () {
+                $("#myForm").submit(function (event) {
+                    alert("form submit");
+
+                    $.ajax({
+                        type: 'GET',
+                        url: 'https://localhost:444/snipets/semantic/getInfo.php',
+                        dataType: 'html',
+                        data: {
+                            url: test
+                        },
+                        beforeSend: function () {
+                            $("#result").html('ohoo');
+                        },
+                        success: function (data) {
+                            $("#result").html(data);
+                        }
+                    });
+
+
+                });
+            });
+        </script>
+    </body>
+</html>

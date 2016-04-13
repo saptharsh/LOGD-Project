@@ -1,0 +1,158 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Factors Affecting Obesity </title>
+	<!--   import Google visualization  API -->
+	<script type="text/javascript" src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1.1','packages'['corechart']]}"> </script>
+	<script type="text/javascript" src="https://www.google.com/jsapi?autoload= {'modules':[{'name':'visualization','version':'1.1','packages':['table']}]}">
+	</script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+
+	<!--   customize function -->
+	<script type="text/javascript">
+
+		/* Actual SPARQL mashup query for reference
+		SELECT  ?eth ?afford ?transit 
+		WHERE {
+			GRAPH <http://localhost:3030/ds1/data/Food> {
+				?s1 <http://cdph.data.ca.gov/resource/_6tej-5zx7/race_eth_name> ?eth.
+	    			?s1 <http://cdph.data.ca.gov/resource/_6tej-5zx7/geoname> "Los Angeles".
+			    	?s1 <http://cdph.data.ca.gov/resource/_6tej-5zx7/affordability_ratio> ?afford.}
+	   		GRAPH <http://localhost:3030/ds1/data/PublicTransit> {
+				?s2 <http://cdph.data.ca.gov/resource/yq3s-y235/race_eth_name> ?eth.
+				?s2 <http://cdph.data.ca.gov/resource/yq3s-y235/geoname> "Los Angeles".
+				?s2 <http://cdph.data.ca.gov/resource/yq3s-y235/p_trans_acc> ?transit.
+				}
+		}
+		*/
+
+	//var queryUrl = "http://localhost:3030/ds1?query=SELECT%20?eth%20?food%20?dist%20WHERE%20{%20GRAPH%20%3Chttp://localhost:3030/ds1/data/dataset1%3E%20{%20?s1%20%3Chttp://cdph.data.ca.gov/resource/_6tej-5zx7/race_eth_name%3E%20?eth.%20?s1%20%3Chttp://cdph.data.ca.gov/resource/_6tej-5zx7/geoname%3E%20%22Alameda%22.%20?s1%20%3Chttp://cdph.data.ca.gov/resource/_6tej-5zx7/affordability_ratio%3E%20?food.%20}%20GRAPH%20%3Chttp://localhost:3030/ds1/data/dataset2%3E%20{%20?s2%20%3Chttp://cdph.data.ca.gov/resource/yq3s-y235/race_eth_name%3E%20?eth.%20?s2%20%3Chttp://cdph.data.ca.gov/resource/yq3s-y235/geoname%3E%20%22Alameda%22.%20?s2%20%3Chttp://cdph.data.ca.gov/resource/yq3s-y235/p_trans_acc%3E%20?dist.%20}%20}";	
+
+	function callRegion()
+	{	 
+	var region=$("#drpRegion").val();	  
+	queryUrl="http://localhost:3030/myDataset/query?query=Select%20%3Fname%20%3Fadd%20%3Fo%20where%20%7B%20%20%0D%0A%3Fs1%20%3Chttp%3A%2F%2Fdata-gov.tw.rpi.edu%2Fvocab%2Fp%2F994%2Fname%3E%20%3Fname.%0D%0A%3Fs1%20%3Chttp%3A%2F%2Fdata-gov.tw.rpi.edu%2Fvocab%2Fp%2F994%2Fstreet_address%3E%20%3Fadd.%0D%0A%3Fs1%20%3Chttp%3A%2F%2Fdata-gov.tw.rpi.edu%2Fvocab%2Fp%2F994%2Fcountry%3E%22US%22%20%20%0D%0A%0D%0A%7D%20%20limit%2010&format=json";		 
+	}
+        
+        var region=$("#drpRegion").val();
+        
+        
+        
+        queryUrl="http://localhost:3030/myDataset/query?query=Select%20%3Fname%20%3Fadd%20%3Fo%20where%20%7B%20%20%0D%0A%3Fs1%20%3Chttp%3A%2F%2Fdata-gov.tw.rpi.edu%2Fvocab%2Fp%2F994%2Fname%3E%20%3Fname.%0D%0A%3Fs1%20%3Chttp%3A%2F%2Fdata-gov.tw.rpi.edu%2Fvocab%2Fp%2F994%2Fstreet_address%3E%20%3Fadd.%0D%0A%3Fs1%20%3Chttp%3A%2F%2Fdata-gov.tw.rpi.edu%2Fvocab%2Fp%2F994%2Fcountry%3E%22US%22%20%20%0D%0A%0D%0A%7D%20%20limit%2010&format=json";		 
+	$(document).ready(function(){
+    		$("#myform").submit(function(e){
+		e.preventDefault();
+        	$.ajax({
+	 		dataType: "jsonp",
+	 		url:queryUrl,	    
+			success: function(data) {
+                            alert(data);
+                            console.log(data);
+                            $("#result").html(data.head);
+				drawChart(data);
+				drawTable(data);	
+				}
+			});
+	  	});
+	});
+            
+        /*
+  	$.ajax({
+	 	dataType: "jsonp",
+	 	url:queryUrl,	    
+		success: function(data) {
+			drawChart(data);	
+			drawTable(data);
+			}
+	  });
+        */
+	function drawTable(data){
+
+		var dataFin = new google.visualization.DataTable();
+		dataFin.addColumn('string','Ethnicity' );
+		dataFin.addColumn('number','Food Affordability' );
+		dataFin.addColumn('number','Distance to Public transit' );
+	
+		var bindings = data.results.bindings; 
+	  	for (var i in bindings) {	  
+	   		var ethnicityData = data.results.bindings[i];	
+			var ethnicity = ethnicityData.eth.value;
+			var Food= ethnicityData.food.value;
+			Food = (Math.floor(Food*1000))/1000;
+			var Transit= ethnicityData.dist.value;
+			Transit = (Math.floor(Transit*1000))/1000;
+			var a = [ethnicity,Food,Transit];
+			dataFin.addRow(a);	
+		}
+
+		var options = {
+			title: 'Food ratio and Transit distance categorized by Ethnicity.\n Region:'+$("#drpRegion").val(),         
+        	};
+		var viz = document.getElementById('table_values');
+        	new google.visualization.Table(viz).draw(dataFin, options );    
+	}
+
+     	function drawChart(data) {
+		var dataFin = new google.visualization.DataTable();
+		dataFin.addColumn('string','eth' );
+		dataFin.addColumn('number','Food Affordability' );
+		dataFin.addColumn('number','Avg Distance to Public transit' );
+	
+		var bindings = data.results.bindings; 
+	  	for (var i in bindings) {	  
+		    	var ethnicityData = data.results.bindings[i];
+			var ethnicity = ethnicityData.eth.value;
+			var Food= ethnicityData.food.value;
+			Food = (Math.floor(Food*1000))/1000;
+			var Transit= ethnicityData.dist.value;
+			Transit = (Math.floor(Transit*1000))/100000;
+			var a = [ethnicity,Food,Transit];
+			dataFin.addRow(a);
+		}
+	
+		var options = {
+		title: 'Food ratio and Transit distance categorized by Ethnicity.\n Region:'+$("#drpRegion").val(),       
+          	bars: 'horizontal'
+        	};
+		var viz = document.getElementById('barchart_values');
+        	new google.visualization.BarChart(viz).draw(dataFin, options );    
+        
+   	   }
+  
+    	</script>
+  </head>
+  <body>
+  	<div><center><h4>FOOD AFFORDABILITY AND<br>AVG DIST TO PUBLIC TRANSIT <br> IN THE STATE OF CALIFORNIA</h4></center></div>
+	<table>
+	<tr>
+	<td>
+	<form id="myform">
+		  <div>Select a Region</div>
+		  <div><select id="drpRegion" onchange="callRegion()">
+		  <option value="PK">Alameda</option>
+		  <option value="Contra Costa">Contra Costa</option>
+		  <option value="Los Angeles">Los Angeles</option>
+		  <option value="Marin">Marin</option>
+		  <option value="San Diego">San Diego</option>
+		  <option value="Orange">Orange</option>
+		  <option value="San Mateo">San Mateo</option>
+		  <option value="Santa Clara">Santa Clara</option>
+		  <option value="San Francisco">San Francisco</option>
+		  <option value="Solano">Solano</option>
+	  	</select></div>
+	<input type="submit" id="btnRegion"></button>
+	</td>
+	<td>
+	 <div id='barchart_values' style="width:700px; height: 500px;">Loading Chart ...</div>
+	</td>
+	<td>
+	<div id='table_values' style="margin-left:-75px;margin-top:150px;width:400px; height: 220px;">Loading Table ...</div></p>
+	</td>
+	</tr>
+            <div id="result">shata</div>
+	<table> 
+	</form>
+            
+            
+  </body>
+</html>
