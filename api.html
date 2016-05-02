@@ -1,7 +1,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <title>Export Alert</title>
+        <title>------------------------</title>
         <!--   import Google visualization  API -->
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js">
         </script>
@@ -11,12 +11,6 @@
         <!--   customize function -->
         <script type="text/javascript">
         google.charts.load('current', {packages: ['corechart','table']});
-//        google.charts.setOnLoadCallback(drawChart);
-        // not used for now
-        function callRegion(){
-            var region = $("#drpRegion").val();
-            queryUrl = "http://localhost:3030/myDataset/query?query=Select%20%3Fname%20%3Fadd%20%3Fo%20where%20%7B%20%20%0D%0A%3Fs1%20%3Chttp%3A%2F%2Fdata-gov.tw.rpi.edu%2Fvocab%2Fp%2F994%2Fname%3E%20%3Fname.%0D%0A%3Fs1%20%3Chttp%3A%2F%2Fdata-gov.tw.rpi.edu%2Fvocab%2Fp%2F994%2Fstreet_address%3E%20%3Fadd.%0D%0A%3Fs1%20%3Chttp%3A%2F%2Fdata-gov.tw.rpi.edu%2Fvocab%2Fp%2F994%2Fcountry%3E%22US%22%20%20%0D%0A%0D%0A%7D%20%20limit%2010&format=json";
-        }
        
         $(document).ready(function(){
             $("#myform").submit(function(e){
@@ -30,25 +24,14 @@
                 dataType: "jsonp",
                         url:queryUrl,
                         success: function(data) {
-//                        alert(data);
-                                console.log(data.results.bindings[0]);
-//                                $("#result").html(data.results.bindings);
+//                                console.log(data.results.bindings[0]);
                                 drawChart(data);
                                 drawTable(data);
                         }
                 });
             });
         });
-                /*
-                 $.ajax({
-                 dataType: "jsonp",
-                 url:queryUrl,	    
-                 success: function(data) {
-                 drawChart(data);	
-                 drawTable(data);
-                 }
-                 });
-                 */
+                
         function drawTable(data){
             
             var scount = 0;
@@ -56,15 +39,15 @@
             var dataFin = new google.visualization.DataTable();
             dataFin.addColumn('string', 'Name');
             dataFin.addColumn('string', 'Address');
-            dataFin.addColumn('string', 'Country');
+            dataFin.addColumn('string', 'Unverified/Denied');
             var bindings = data.results.bindings;
             for (var i in bindings) {
-                var ethnicityData = data.results.bindings[i];
-                var name = ethnicityData.name.value;
-                var add = ethnicityData.add.value;
+                var jsondata = data.results.bindings[i];
+                var name = jsondata.name.value;
+                var add = jsondata.add.value;
                
-                var country = ethnicityData.country.value;
-                country.length > 3?count++:scount++;
+                var country = jsondata.country.value;
+                country.length > 3?country="Unverified":country="Denied";
                 
                 var a = [name, add, country];
                 dataFin.addRow(a);
@@ -85,9 +68,9 @@
             console.log(data);
             var bindings = data.results.bindings;
             for (var i in bindings) {
-                var ethnicityData = data.results.bindings[i];
+                var jsondata = data.results.bindings[i];
                 
-                var country = ethnicityData.country.value;
+                var country = jsondata.country.value;
                 country.length > 3?unverified++:denied++;
             }
         var data1 = google.visualization.arrayToDataTable([
@@ -135,24 +118,15 @@
                             <div>Select a Region</div>
                             <div><select id="drpRegion" onchange="callRegion()">
                                     <option value="PK">Pakistan</option>
-                                    <option value="Contra Costa">Contra Costa</option>
-                                    <option value="Los Angeles">Los Angeles</option>
-                                    <option value="Marin">Marin</option>
-                                    <option value="San Diego">San Diego</option>
-                                    <option value="Orange">Orange</option>
-                                    <option value="San Mateo">San Mateo</option>
-                                    <option value="Santa Clara">Santa Clara</option>
-                                    <option value="San Francisco">San Francisco</option>
-                                    <option value="Solano">Solano</option>
+                                    <option value="US">United States</option>
+                                    <option value="UAE">United Arab Emirates</option>
+                                    <option value="CH">China</option>
+                                    <option value="SN">Singapore</option>
                                  </select>
                             </div>
                             <input type="submit" id="btnRegion"></button>
                     </td>
-<!--
-                    <td>
-                        <div id='barchart_values' style="width:700px; height: 500px;">Loading Chart ...</div>
-                    </td>
--->                 </tr>
+                </tr>
                     <tr>
                     <td>
                         <div id='chart_values' style="width: 500px; height: 500px;">Loading Chart ...</div>
