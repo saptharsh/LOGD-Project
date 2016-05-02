@@ -1,7 +1,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <title>------------------------</title>
+        <title>Export Alert</title>
         <!--   import Google visualization  API -->
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js">
         </script>
@@ -17,14 +17,6 @@
             var region = $("#drpRegion").val();
             queryUrl = "http://localhost:3030/myDataset/query?query=Select%20%3Fname%20%3Fadd%20%3Fo%20where%20%7B%20%20%0D%0A%3Fs1%20%3Chttp%3A%2F%2Fdata-gov.tw.rpi.edu%2Fvocab%2Fp%2F994%2Fname%3E%20%3Fname.%0D%0A%3Fs1%20%3Chttp%3A%2F%2Fdata-gov.tw.rpi.edu%2Fvocab%2Fp%2F994%2Fstreet_address%3E%20%3Fadd.%0D%0A%3Fs1%20%3Chttp%3A%2F%2Fdata-gov.tw.rpi.edu%2Fvocab%2Fp%2F994%2Fcountry%3E%22US%22%20%20%0D%0A%0D%0A%7D%20%20limit%2010&format=json";
         }
-
-        /*
-        var region = $("#drpRegion").val();
-        var reg = $("#drpRegion option:selected").val();
-        var r = $("#drpRegion").text($(this).find(":selected").text());
-        console.log(r);
-        queryUrl = "http://localhost:3030/myDataset/query?query=Select%20%3Fname%20%3Fadd%20%3Fo%20where%20%7B%20%20%0D%0A%3Fs1%20%3Chttp%3A%2F%2Fdata-gov.tw.rpi.edu%2Fvocab%2Fp%2F994%2Fname%3E%20%3Fname.%0D%0A%3Fs1%20%3Chttp%3A%2F%2Fdata-gov.tw.rpi.edu%2Fvocab%2Fp%2F994%2Fstreet_address%3E%20%3Fadd.%0D%0A%3Fs1%20%3Chttp%3A%2F%2Fdata-gov.tw.rpi.edu%2Fvocab%2Fp%2F994%2Fcountry%3E%22US%22%20%20%0D%0A%0D%0A%7D%20%20limit%2010&format=json";
-        */
        
         $(document).ready(function(){
             $("#myform").submit(function(e){
