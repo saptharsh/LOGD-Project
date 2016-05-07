@@ -1,7 +1,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <title>------------------------</title>
+        <title>LOGD</title>
         <!--   import Google visualization  API -->
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js">
         </script>
@@ -24,9 +24,9 @@
                 dataType: "jsonp",
                         url:queryUrl,
                         success: function(data) {
-//                                console.log(data.results.bindings[0]);
-                                drawChart(data);
-                                drawTable(data);
+                            // Visulization for the data aquired from the SPARQL End Point
+                            drawChart(data);
+                            drawTable(data);
                         }
                 });
             });
@@ -110,6 +110,7 @@
         
         </style>
         <div class="wrapper">
+        <!-- Front Page for the APP -->
         <div><center><h4>LIST OF <br> DENIED AND UNVERIFIED FOREIGN PERSONS<br> FOR US EXPORT PRIVILEGES</h4></center></div>
             <table>
                 <tr>
